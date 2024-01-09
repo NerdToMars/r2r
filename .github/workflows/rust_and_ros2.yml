@@ -3,7 +3,7 @@ name: ROS CI
 on:
   push:
     branches:
-      - master
+      - dev
   pull_request:
 
 env:
