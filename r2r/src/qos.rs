@@ -825,6 +825,7 @@ impl RclDurationT for Duration {
     }
 
     fn from_rmw_time_t(rmw_time: &rmw_time_t) -> Self {
+        println!("from_rmw_time_t {:?}", rmw_time);
         assert!(
             rmw_time.nsec < 1_000_000_000,
             "nsec part of rmw_time_t should be less than 1 billion"
