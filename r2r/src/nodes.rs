@@ -1182,15 +1182,17 @@ impl Node {
         let mut info_array: rcl_topic_endpoint_info_array_t =
             unsafe { rmw_get_zero_initialized_topic_endpoint_info_array() };
 
-        let result = unsafe {
-            rcl_get_publishers_info_by_topic(
-                node,
-                &mut allocator,
-                topic_c_string.as_ptr(),
-                no_mangle,
-                &mut info_array,
-            )
-        };
+        // let result = unsafe {
+        //     rcl_get_publishers_info_by_topic(
+        //         node,
+        //         &mut allocator,
+        //         topic_c_string.as_ptr(),
+        //         no_mangle,
+        //         &mut info_array,
+        //     )
+        // };
+        // test where is the error from
+        let result = RCL_RET_OK;
 
         if result != RCL_RET_OK as i32 {
             unsafe { rmw_topic_endpoint_info_array_fini(&mut info_array, &mut allocator) };
