@@ -1192,7 +1192,7 @@ impl Node {
         //     )
         // };
         // test where is the error from
-        let result = RCL_RET_OK;
+        let result = RCL_RET_OK as i32;
 
         if result != RCL_RET_OK as i32 {
             unsafe { rmw_topic_endpoint_info_array_fini(&mut info_array, &mut allocator) };
