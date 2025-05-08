@@ -955,6 +955,11 @@ impl Node {
         Ok(goal_request_receiver)
     }
 
+    /// get a publisher by topic name and qos profile
+    fn get_publisher_(&self, topic: &str, qos_profile: QosProfile) -> Option<Arc<Publisher_>> {
+        self.pubs.iter().find(|p| p.topic_name.as_str() == topic && p.qos_profile == qos_profile)
+    }
+
     /// Create a ROS publisher.
     pub fn create_publisher<T>(
         &mut self, topic: &str, qos_profile: QosProfile,
@@ -962,11 +967,16 @@ impl Node {
     where
         T: WrappedTypesupport,
     {
-        let publisher_handle =
-            create_publisher_helper(self.node_handle.as_mut(), topic, T::get_ts(), qos_profile)?;
-        let arc = Arc::new(publisher_handle);
-        let p = make_publisher(Arc::downgrade(&arc));
-        self.pubs.push(arc);
+        let arc_pub = if let Some(publisher) = self.get_publisher_(topic, qos_profile) {
+            publisher
+        } else {
+            let publisher_handle =
+                create_publisher_helper(self.node_handle.as_mut(), topic, T::get_ts(), qos_profile)?;
+            let arc = Arc::new(publisher_handle);
+            self.pubs.push(arc.clone());
+            arc
+        };
+        let p = make_publisher(Arc::downgrade(&arc_pub));
         Ok(p)
     }
 

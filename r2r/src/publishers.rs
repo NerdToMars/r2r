@@ -38,8 +38,8 @@ unsafe impl<T> Send for Publisher<T> where T: WrappedTypesupport {}
 
 pub(crate) struct Publisher_ {
     handle: rcl_publisher_t,
-    topic_name: String,
-    qos_profile: QosProfile,
+    pub(crate) topic_name: String,
+    pub(crate) qos_profile: QosProfile,
 
     // TODO use a mpsc to avoid the mutex?
     poll_inter_process_subscriber_channels: Mutex<Vec<oneshot::Sender<()>>>,
