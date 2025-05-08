@@ -957,7 +957,7 @@ impl Node {
 
     /// get a publisher by topic name and qos profile
     fn get_publisher_(&self, topic: &str, qos_profile: QosProfile) -> Option<Arc<Publisher_>> {
-        self.pubs.iter().find(|p| p.topic_name.as_str() == topic && p.qos_profile == qos_profile)
+        self.pubs.iter().find(|p| p.topic_name.as_str() == topic && p.qos_profile == qos_profile).cloned()
     }
 
     /// Create a ROS publisher.
@@ -967,7 +967,7 @@ impl Node {
     where
         T: WrappedTypesupport,
     {
-        let arc_pub = if let Some(publisher) = self.get_publisher_(topic, qos_profile) {
+        let arc_pub = if let Some(publisher) = self.get_publisher_(topic, qos_profile.clone()) {
             publisher
         } else {
             let publisher_handle =
