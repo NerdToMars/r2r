@@ -145,7 +145,7 @@ pub fn create_publisher_helper(
 
     let result = unsafe {
         let mut publisher_options = rcl_publisher_get_default_options();
-        publisher_options.qos = qos_profile.into();
+        publisher_options.qos = qos_profile.clone().into();
         rcl_publisher_init(
             &mut publisher_handle,
             node,
